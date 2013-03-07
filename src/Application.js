@@ -37,12 +37,12 @@ exports = Class(GC.Application, function (supr) {
 		window.AppMobi = {
 			canvas: canvas,
 			context: {
-				loadSound: function() {},
-				playSound: function() {}
+				loadSound: function(src) { logger.log("AUDIO (CONTEXT) - LOAD:", src); },
+				playSound: function(src) { logger.log("AUDIO (CONTEXT) - PLAY:", src); }
 			},
 			player: {
-				loadSound: function() {},
-				playSound: function() {}
+				loadSound: function(src) { logger.log("AUDIO (PLAYER) - LOAD:", src); },
+				playSound: function(src) { logger.log("AUDIO (PLAYER) - PLAY:", src); }
 			},
 			webview: {
 				execute: function() {}
