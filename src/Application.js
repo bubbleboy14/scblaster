@@ -22,6 +22,7 @@ exports = Class(GC.Application, function (supr) {
 	this.launchUI = function () {
 		// turn off screen clearing
 		this.engine._opts.alwaysRepaint = false;
+		this.engine._opts.repaintOnEvent = false;
 		
 		// canvas faking
 		//  - pretend to be a "direct canvas"
