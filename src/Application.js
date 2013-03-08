@@ -107,9 +107,7 @@ exports = Class(GC.Application, function (supr) {
 			};
 		};
 		
-		// import game
-		// overwrite asset paths
-		// set fullscreen mode flag
+		// import game and modify project model
 		jsio("external src.c2runtime import cr");
 		var oldGetProjModel = cr.getProjectModel;
 		function deepReplace (obj, search, replace) {
@@ -123,9 +121,14 @@ exports = Class(GC.Application, function (supr) {
 		}
 		cr.getProjectModel = function() {
 			var data = oldGetProjModel();
+			
+			// set fullscreen mode to stretch
 			data[11] = 1;
+			
+			// overwrite asset paths
 			data = deepReplace(data, /^images\//, "resources/images/");
 			data = deepReplace(data, /^media\//, "resources/media/");
+			
 			return data;
 		}
 		
