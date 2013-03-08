@@ -122,8 +122,8 @@ exports = Class(GC.Application, function (supr) {
 		cr.getProjectModel = function() {
 			var data = oldGetProjModel();
 			
-			// set fullscreen mode to stretch
-			data[11] = 1;
+			// set fullscreen mode to scale
+			data[11] = 2;
 			
 			// overwrite asset paths
 			data = deepReplace(data, /^images\//, "resources/images/");

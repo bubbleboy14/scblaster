@@ -11,7 +11,7 @@
 		"stagingDomain": "staging.example.com"
 	},
 	"supportedOrientations": [
-		"landscape"
+		"portrait"
 	],
 	"description": "",
 	"icon": "resources/icons/icon512.png",
