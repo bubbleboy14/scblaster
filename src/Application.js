@@ -66,10 +66,7 @@ exports = Class(GC.Application, function (supr) {
 			context: {
 				loadSound: function(src) { logger.log('AUDIO (LOAD) - src:', src); },
 				playSound: function(src) {
-					logger.log('AUDIO (PLAY) - src:', src);
-					var sname = src.slice(16).replace(/ /g, '_').replace(/-/g, '_').replace('.ogg', '');
-					logger.log('AUDIO (PLAY) - name:', sname);
-					sound.play(sname);
+					sound.play(src.slice(16).replace(/ /g, '_').replace(/-/g, '_').replace('.ogg', ''));
 				}
 			},
 			webview: {
