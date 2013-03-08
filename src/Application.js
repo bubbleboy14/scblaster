@@ -15,6 +15,8 @@
  * along with the Game Closure SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import AudioManager;
+
 exports = Class(GC.Application, function (supr) {
 
 	this.launchUI = function () {
@@ -33,16 +35,42 @@ exports = Class(GC.Application, function (supr) {
 			return "red";
 		};
 		
+		// set up our sound manager
+		var sound = new AudioManager({
+			path: 'resources/media',
+			files: {
+				epicarpg: {
+					background: true
+				},
+				explosion_1: {},
+				explosion_2: {},
+				explosion_3: {},
+				explosion_4: {},
+				jetloop1: {},
+				lazer_fire_1: {},
+				lazer_ricochet: {},
+				mattoglseby___3: {
+					background: true
+				},
+				retrolaser1: {},
+				retrolaser2: {},
+				squaremotif1: {},
+				tronblast1: {},
+				upgrade1: {}
+			}
+		});
+		
 		// pretend to be AppMobi
 		window.AppMobi = {
 			canvas: canvas,
 			context: {
-				loadSound: function(src) { logger.log("AUDIO (CONTEXT) - LOAD:", src); },
-				playSound: function(src) { logger.log("AUDIO (CONTEXT) - PLAY:", src); }
-			},
-			player: {
-				loadSound: function(src) { logger.log("AUDIO (PLAYER) - LOAD:", src); },
-				playSound: function(src) { logger.log("AUDIO (PLAYER) - PLAY:", src); }
+				loadSound: function(src) { logger.log('AUDIO (LOAD) - src:', src); },
+				playSound: function(src) {
+					logger.log('AUDIO (PLAY) - src:', src);
+					var sname = src.slice(16).replace(/ /g, '_').replace(/-/g, '_').replace('.ogg', '');
+					logger.log('AUDIO (PLAY) - name:', sname);
+					sound.play(sname);
+				}
 			},
 			webview: {
 				execute: function() {}
@@ -101,8 +129,10 @@ exports = Class(GC.Application, function (supr) {
 			return data;
 		}
 		
-		// run game!
-		cr_createDCRuntime(jQuery(window).width(), jQuery(window).height());
+		// preload audio and run game!
+		GCResources.preload('resources/media', function() {
+			cr_createDCRuntime(jQuery(window).width(), jQuery(window).height());
+		});
 	};
 	
 });
