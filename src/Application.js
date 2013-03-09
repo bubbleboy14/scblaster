@@ -39,6 +39,7 @@ exports = Class(GC.Application, function (supr) {
 		// set up our sound manager
 		var sound = new AudioManager({
 			path: 'resources/media',
+			preload: true,
 			files: {
 				epicarpg: {
 					background: true
@@ -130,10 +131,8 @@ exports = Class(GC.Application, function (supr) {
 			return data;
 		}
 		
-		// preload audio and run game!
-		GCResources.preload('resources/media', function() {
-			cr_createDCRuntime(jQuery(window).width(), jQuery(window).height());
-		});
+		// run game!
+		cr_createDCRuntime(jQuery(window).width(), jQuery(window).height());
 	};
 	
 });
