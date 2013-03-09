@@ -9,4 +9,10 @@ def process(imgs, dirname, fnames):
 			print ' - converting', fpath
 			call('convert -transparent black -fuzz 10%% %s %s'%(fpath, fpath), shell=True)
 
+def mono(nothing, dirname, fnames):
+	for fname in [f for f in fnames if f.endswith('png')]:
+		fpath = os.path.join(dirname, fname)
+		call('convert -monochrome %s %s'%(fpath, fpath), shell=True)
+
+#os.path.walk('resources/images', mono, None)
 os.path.walk('resources/images', process, ['explosion1', 'explosion3', 'playerthrust'])

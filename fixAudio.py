@@ -1,6 +1,6 @@
 from subprocess import call
 
-print 'renaming necessary ogg files to mp3 and sanitizing'
+print 'renaming ogg files to mp3 and sanitizing'
 call('rename -s ogg mp3 resources/media/*ogg -z', shell=True)
 
 print 'replacing dashes with underscores'
