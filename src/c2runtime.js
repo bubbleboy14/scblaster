@@ -12069,7 +12069,6 @@ cr.plugins_.TiledBg = function(runtime)
 			this.webGL_texture = null;
 		}
 	};
-	var dcount = 0;
 	instanceProto.draw = function(ctx)
 	{
 		ctx.globalAlpha = this.opacity;
