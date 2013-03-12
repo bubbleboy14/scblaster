@@ -7,7 +7,7 @@ exports = Class(GC.Application, function () {
 		this.engine._opts.alwaysRepaint = false;
 		this.engine._opts.repaintOnEvent = false;
 		
-		// map our input events to Construct2 handlers
+		// map our input events to Construct 2 handlers
 		var inputMap = {
 			touchstart: "onInputStart",
 			touchmove: "onInputMove",
@@ -96,7 +96,7 @@ exports = Class(GC.Application, function () {
 		
 		// humor Construct 2 on native
 		//  - fake getDocumentById
-		//  - fake jquery
+		//  - fake jQuery
 		document.getElementById = document.getElementById || function() { return null; };
 		window.jQuery = function(w) {
 			return {
