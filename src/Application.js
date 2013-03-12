@@ -93,7 +93,7 @@ exports = Class(GC.Application, function () {
 		};
 		
 		// humor Construct 2 on native
-		//  - fake getDocumentById
+		//  - fake getElementById
 		//  - fake jQuery
 		document.getElementById = document.getElementById || function() { return null; };
 		window.jQuery = function(w) {
