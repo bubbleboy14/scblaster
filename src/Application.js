@@ -1,22 +1,25 @@
 import AudioManager;
 
-exports = Class(GC.Application, function (supr) {
+exports = Class(GC.Application, function () {
 
 	this.launchUI = function () {
 		// turn off screen clearing
 		this.engine._opts.alwaysRepaint = false;
 		this.engine._opts.repaintOnEvent = false;
 		
-		// canvas faking
-		//  - pretend to be a "direct canvas"
-		//  - pretend to support context.present and context.createPattern
-		var canvas = GC.app.engine.getCanvas();
-		canvas.dc = true;
-		var ctx = canvas.getContext('2d');
-		ctx.present = function() {};
-		ctx.createPattern = ctx.createPattern || function(img) {
-			logger.log("CTX CREATEPATTERN:", img._src);
-			return "red";
+		// map our input events to Construct2 handlers
+		var inputMap = {
+			touchstart: "onInputStart",
+			touchmove: "onInputMove",
+			touchend: "onInputSelect"
+		};
+		window.Canvas = {
+			addEventListener: bind(this, function(name, handler) {
+				this[inputMap[name]] = function(e) {
+					e.changedTouches = [{ pageX: e.pt[1].x, pageY: e.pt[1].y, identifier: 0 }];
+					handler(e);
+				};
+			})
 		};
 		
 		// set up our sound manager
@@ -45,11 +48,21 @@ exports = Class(GC.Application, function (supr) {
 			}
 		});
 		
+		// canvas faking
+		//  - pretend to be a "direct canvas"
+		//  - pretend to support context.present and context.createPattern
+		var canvas = GC.app.engine.getCanvas();
+		var ctx = canvas.getContext('2d');
+		ctx.present = function() {};
+		ctx.createPattern = ctx.createPattern || function() {
+			return "red";
+		};
+		
 		// pretend to be AppMobi
 		window.AppMobi = {
 			canvas: canvas,
 			context: {
-				loadSound: function(src) { logger.log('AUDIO (LOAD) - src:', src); },
+				loadSound: function(src) {},
 				playSound: function(src) {
 					sound.play(src.slice(16).replace(/ /g, '_').replace(/-/g, '_').replace('.ogg', ''));
 				}
@@ -57,36 +70,6 @@ exports = Class(GC.Application, function (supr) {
 			webview: {
 				execute: function() {}
 			}
-		};
-		
-		// map our input events to Construct2 handlers
-		var inputMap = {
-			touchstart: "onInputStart",
-			touchmove: "onInputMove",
-			touchend: "onInputSelect"
-		};
-		window.Canvas = {
-			addEventListener: bind(this, function(name, handler) {
-				this[inputMap[name]] = function(e) {
-					e.changedTouches = [{ pageX: e.pt[1].x, pageY: e.pt[1].y, identifier: 0 }];
-					handler(e);
-				};
-			})
-		};
-		
-		// humor Construct2
-		//  - fake getDocumentById
-		//  - fake jquery
-		document.getElementById = document.getElementById || function() { return null; };
-		window.jQuery = function(w) {
-			return {
-				width: function() {
-					return w.innerWidth || w.screen.width;
-				},
-				height: function() {
-					return w.innerHeight || w.screen.height;
-				}
-			};
 		};
 		
 		// import game and modify project model
@@ -104,18 +87,28 @@ exports = Class(GC.Application, function (supr) {
 		cr.getProjectModel = function() {
 			var data = oldGetProjModel();
 			
-			// set fullscreen mode to scale
-			data[11] = 2;
-			
 			// overwrite asset paths
 			data = deepReplace(data, /^images\//, "resources/images/");
 			data = deepReplace(data, /^media\//, "resources/media/");
 			
 			return data;
-		}
+		};
 		
-		// run game!
-		cr_createDCRuntime(jQuery(window).width(), jQuery(window).height());
+		// humor Construct 2 on native
+		//  - fake getDocumentById
+		//  - fake jquery
+		document.getElementById = document.getElementById || function() { return null; };
+		window.jQuery = function(w) {
+			return {
+				width: function() {
+					return w.innerWidth || w.screen.width;
+				},
+				height: function() {
+					return w.innerHeight || w.screen.height;
+				}
+			};
+		};
+		
+		cr_createDCRuntime();
 	};
-	
 });
