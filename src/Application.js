@@ -48,9 +48,7 @@ exports = Class(GC.Application, function () {
 			}
 		});
 		
-		// canvas faking
-		//  - pretend to be a "direct canvas"
-		//  - pretend to support context.present and context.createPattern
+		// pretend to support context.present and context.createPattern
 		var canvas = GC.app.engine.getCanvas();
 		var ctx = canvas.getContext('2d');
 		ctx.present = function() {};
