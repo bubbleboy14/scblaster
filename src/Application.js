@@ -48,13 +48,10 @@ exports = Class(GC.Application, function () {
 			}
 		});
 		
-		// pretend to support context.present and context.createPattern
+		// pretend to support context.present
 		var canvas = GC.app.engine.getCanvas();
 		var ctx = canvas.getContext('2d');
 		ctx.present = function() {};
-		ctx.createPattern = ctx.createPattern || function() {
-			return "red";
-		};
 		
 		// pretend to be AppMobi
 		window.AppMobi = {
